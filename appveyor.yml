@@ -3,7 +3,7 @@ image:
 
 platform:
     - x64
-    - x86
+      #- x86
 
 environment:
     fast_finish: true
@@ -11,9 +11,7 @@ environment:
         - VSVER: 15
 
 configuration:
-    - shared
     - plain
-    - minimal
 
 before_build:
     - ps: >-
@@ -39,6 +37,9 @@ before_build:
             $env:SHARED="no-shared no-makedepend"
         }
     - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %VCVARS_PLATFORM%
+    - echo %cd%
+    - git clone https://github.com/openssl/openssl
+    - git checkout OpenSSL_1_1_1k
     - mkdir _build
     - cd _build
     - perl ..\Configure %TARGET% %SHARED%
@@ -58,6 +59,7 @@ build_script:
             cmd /c "nmake build_all_generated 2>&1"
             cmd /c "nmake PERL=no-perl 2>&1"
         }
+        cmd /c "nmake install DESTDIR=..\_install 2>&1"
     - cd ..
 
 test_script:

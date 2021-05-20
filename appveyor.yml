@@ -39,6 +39,7 @@ before_build:
     - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %VCVARS_PLATFORM%
     - echo %cd%
     - git clone https://github.com/openssl/openssl
+    - cd openssl
     - git checkout OpenSSL_1_1_1k
     - mkdir _build
     - cd _build

@@ -10,6 +10,10 @@ environment:
     matrix:
         - VSVER: 15
 
+init:
+  - set version=1.1.1k
+  - set vctool=v141
+
 configuration:
     - plain
 
@@ -79,3 +83,10 @@ test_script:
             cmd /c "nmake install DESTDIR=..\_install 2>&1"
         }
     - cd ..
+    - 7z a openssl-1.1.1k.zip _install
+    - 7z l openssl-1.1.1k.zip _install
+
+artifacts:
+    - path: '**\*.zip'
+
+

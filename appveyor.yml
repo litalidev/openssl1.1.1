@@ -60,7 +60,7 @@ before_build:
 
 build_script:
     - cd _build
-      - ps: >-
+    - ps: >-
         (Get-content makefile) | Foreach-Object {$_ -replace "/MT ", "/MD "} | Set-Content makefile
 
     - ps: >-

@@ -12,6 +12,8 @@ environment:
 
 init:
   - set version=1.1.1k
+  - set tag_version=1_1_1k
+    - git checkout OpenSSL_1_1_1k
   - set vctool=v141
 
 configuration:
@@ -44,7 +46,7 @@ before_build:
     - echo %cd%
     - git clone https://github.com/openssl/openssl
     - cd openssl
-    - git checkout OpenSSL_1_1_1k
+    - git checkout OpenSSL_%tag_version%
     - mkdir _build
     - cd _build
     - perl ..\Configure --prefix=c:/prg/openssl --openssldir=c:/prg/openssl/ssl %TARGET% %SHARED%
@@ -59,6 +61,8 @@ before_build:
 
 build_script:
     - cd _build
+      #- ps: >-
+      #(Get-content Makefile) | Foreach-Object {$_ -replace "^SourceRegexp$", "DestinationString"} | Set-Content Makefile
     - ps: >-
         If ($env:Configuration -Match "shared" -or $env:EXTENDED_TESTS) {
             cmd /c "nmake build_all_generated 2>&1"
@@ -83,10 +87,13 @@ test_script:
             cmd /c "nmake install DESTDIR=..\_install 2>&1"
         }
     - cd ..
-    - 7z a openssl-1.1.1k.zip _install
-    - 7z l openssl-1.1.1k.zip _install
+    - cd _install\prg\openssl
+    - 7z a openssl-%version%-%Platform%.zip *
+    - 7z l openssl-%version%-%Platform%.zip 
 
 artifacts:
     - path: '**\*.zip'
+    - path: '**\Makefile'
+    - path: '**\makefile'
 
 

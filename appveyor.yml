@@ -3,7 +3,7 @@ image:
 
 platform:
     - x64
-      #- x86
+    - x86
 
 environment:
     fast_finish: true
@@ -60,8 +60,9 @@ before_build:
 
 build_script:
     - cd _build
-      #- ps: >-
-      #(Get-content Makefile) | Foreach-Object {$_ -replace "^SourceRegexp$", "DestinationString"} | Set-Content Makefile
+      - ps: >-
+        (Get-content makefile) | Foreach-Object {$_ -replace "/MT ", "/MD "} | Set-Content makefile
+
     - ps: >-
         If ($env:Configuration -Match "shared" -or $env:EXTENDED_TESTS) {
             cmd /c "nmake build_all_generated 2>&1"
@@ -92,7 +93,6 @@ test_script:
 
 artifacts:
     - path: '**\*.zip'
-    - path: '**\Makefile'
-    - path: '**\makefile'
+    - path: 'openssl\_build\makefile'
 
 

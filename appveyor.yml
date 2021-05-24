@@ -13,7 +13,6 @@ environment:
 init:
   - set version=1.1.1k
   - set tag_version=1_1_1k
-    - git checkout OpenSSL_1_1_1k
   - set vctool=v141
 
 configuration:
